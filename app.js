@@ -33,7 +33,7 @@ function createData(){
 }
 
 function createdData() {
-    return '{"DateTime":'+currentTime+', "Temperature":'+temp+'}'
+    return '{"DateTime":'+'"'+currentTime+'"'+', "Temperature":'+temp+'}'
 }
 
 function random() {
