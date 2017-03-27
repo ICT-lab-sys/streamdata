@@ -28,7 +28,6 @@ var randomData = setInterval(createData, 3000);
 function createData(){
     temp = Math.floor(Math.random() * (max - min + 1)) + min;
     currentTime = new Date()
-    //moment =  moment().format('MMMM Do YYYY, h:mm:ss a');
 
 }
 
@@ -43,7 +42,7 @@ function random() {
 
 
 router.get('/', function (req, res) {
-    res.send("Please go to localhost:3001/api/temp")
+    res.send("Please go to localhost:3001/api/streamdata/temp")
 })
 
 
@@ -52,7 +51,7 @@ router.get('/temp', function (req, res) {
 });
 
 
-app.use('/api', router);
+app.use('/api/streamdata', router);
 
 
 app.listen(port, function () {
