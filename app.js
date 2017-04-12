@@ -17,28 +17,42 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 3001;
 var router = express.Router();
 
-var min = 12;
-var max = 30;
+var minTemp = 12;
+var maxTemp = 30;
+var minHumidity = 40;
+var maxHumidity = 60;
 var temp;
+var humidity;
 var currentTime;
 var moment;
 
 var randomData = setInterval(createData, 3000);
 
 function createData(){
-    temp = Math.floor(Math.random() * (max - min + 1)) + min;
+    temp = Math.floor(Math.random() * (maxTemp - minTemp + 1)) + minTemp
+    humidity = Math.floor(Math.random() * (maxHumidity - minHumidity + 1)) + minHumidity;
     currentTime = new Date()
-
 }
 
-function createdData() {
+function createdDataTemp() {
     return '{"DateTime":'+'"'+currentTime+'"'+', "Temperature":'+temp+'}'
 }
 
-function random() {
-    console.log(createdData())
-    return createdData()
+function createdDataHumidity() {
+    return '{"DateTime":'+'"'+currentTime+'"'+', "Humidity":'+humidity+'}'
 }
+
+function random() {
+    console.log(createdDataTemp())
+    return createdDataTemp()
+}
+
+function humidityFunc(){
+   console.log(createdDataHumidity())
+   return createdDataHumidity()
+   // return "Jasmeet"
+}
+
 
 
 router.get('/', function (req, res) {
@@ -48,6 +62,10 @@ router.get('/', function (req, res) {
 
 router.get('/temp', function (req, res) {
     res.send(random())
+});
+
+router.get('/humidity', function (req, res) {
+    res.send(humidityFunc());
 });
 
 
