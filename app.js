@@ -28,7 +28,6 @@ var randomData = setInterval(createData, 3000);
 function createData(){
     temp = Math.floor(Math.random() * (max - min + 1)) + min;
     currentTime = new Date()
-
 }
 
 function createdData() {
@@ -37,7 +36,7 @@ function createdData() {
 
 function random() {
     console.log(createdData())
-    return createdData()
+    return createdData() 
 }
 
 
@@ -52,7 +51,7 @@ router.get('/temp', function (req, res) {
 
 
 app.use('/api/streamdata', router);
-
+//niks
 
 app.listen(port, function () {
     console.log('Example app listening on port '+port+'!')
