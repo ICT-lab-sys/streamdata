@@ -4,8 +4,10 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "array-includes": "^3.0.3",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "http": "0.0.0",
     "moment": "^2.18.0",
     "mongodb": "^2.2.25"
   },

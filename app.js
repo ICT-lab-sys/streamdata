@@ -4,6 +4,8 @@ var express = require('express')
 var app = express();
 var bodyParser = require('body-parser')
 var moment = require('moment');
+const http = require('http')
+var includes = require('array-includes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -25,7 +27,8 @@ var activeTempNodes = 1;
 var activeHumidNodes = 1;
 var tempID = 2;
 var humidID = 2;
-
+var arr = [];
+var arrTempID = [];
 var randomTempData = setInterval(function() { createData('temper');}, 3000);
 var randomHumidData = setInterval(function() { createData('humid');}, 3000);
 
@@ -40,17 +43,23 @@ function createData(type){
 }
 
 function createdDataTemp() {
-    return '{"DateTime":'+'"'+currentTime+'"'+', "Temperature":'+temp+'}'
+    return '{"DateTime":' + '"' + currentTime + '"' + ', "Temperature":' + temp + '}'
 }
+
+function sensorStopped() {
+    return 'Sensor gestopt'
+}
+
+var obj = '{"DateTime":' + '"' + currentTime + '"' + ', "Temperature":' + temp + '}'
 
 function createdDataHumidity() {
     return '{"DateTime":'+'"'+currentTime+'"'+', "Humidity":'+humidity+'}'
 }
 
-function random() {
-    console.log(createdDataTemp())
-    return createdDataTemp()
-}
+// function random() {
+//     console.log(createdDataTemp())
+//     return createdDataTemp()
+// }
 
 function humidityFunc(){
    console.log(createdDataHumidity())
@@ -65,8 +74,34 @@ router.get('/', function (req, res) {
 
 
 router.get('/temp/'+1, function (req, res) {
-    res.send(random())
+    console.log(obj)
+        res.send(createdDataTemp())
 });
+router.get('/temp/:id', function (req, res) {
+    var id = req.params.id
+    // console.log(id)
+    // console.log(includes(arrTempID, id))
+    if(includes(arrTempID, id)){
+        if(includes(arr, id)){
+            res.send("sensor gestopt")
+        } else{
+            res.send(createdDataTemp())
+        }
+        } else {
+        res.send("No sensor found")
+    }
+});
+
+router.get('/temp/restart/:id', function (req, res) {
+    var id = req.params.id
+    var i = arr.indexOf(id);
+    if(i > -1) {
+        arr.splice(i,1);
+    }
+    res.send('gelukt')
+});
+//     res.send(createdDataTemp())
+// });
 
 router.get('/humidity/'+1, function (req, res) {
     res.send(humidityFunc());
@@ -87,12 +122,16 @@ router.get('/activenodes', function (req, res) {
     res.send(JSON.stringify({temp : activeTempNodes, humid : activeHumidNodes}))
 });
 
-router.get('/delete/temp/:id', function (req, res) {
-     var id = req.params.id
-        makeResUrls(false);
-     res.send('proces gestopt')
+router.get('/temp/stop/:id', function (req, res) {
+    var id = req.params.id
+    arr.push(id);
+    res.send('gelukt')
+})
 
-    })
+router.get('/check', function (req, res) {
+   // res.send("arrTempID: "+arrTempID+", "+"arr: "+arr)
+    res.send(arr)
+})
 
 
 app.use('/api/streamdata', router);
@@ -109,7 +148,7 @@ function makeNewNode(type) {
 
     if(type == 'humid'){
         router.get('/temp/'+humidID, function (req, res) {
-            res.send(random())
+            res.send(createdDataTemp())
         });
         humidID++;
     }
@@ -117,11 +156,12 @@ function makeNewNode(type) {
 }
 
 function makeResUrls(boolean) {
-    console.log(boolean)
+   // console.log(boolean)
    if(boolean == true){
        router.get('/temp/' + tempID, function (req, res) {
-           res.send(random())
+               res.send(createdDataTemp())
        });
+       arrTempID.push(tempID.toString())
        tempID++;
    }
    if(boolean == false){
