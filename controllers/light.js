@@ -20,6 +20,7 @@ var activeLightNodes = 1;
 var lightID = 2;
 var arr = [];
 var arrTempID = [];
+var activeNodes = ["1"];
 var randomLightData = setInterval(function() { createData();}, 3000);
 
 router.use('/api/streamdata', router);
@@ -54,6 +55,14 @@ router.get('/light/:id', function (req, res) {
     }
 });
 
+router.get('/inactive/light', function (req, res) {
+    res.send(arr)
+})
+
+router.get('/active/light', function (req, res) {
+    res.send(activeNodes)
+})
+
 router.get('/light/restart/:id', function (req, res) {
     var id = req.params.id
     var i = arr.indexOf(id);
@@ -61,6 +70,7 @@ router.get('/light/restart/:id', function (req, res) {
         arr.splice(i,1);
     }
     arrTempID.push(id)
+    activeNodes.push(id)
     res.send('gelukt')
 });
 
@@ -78,6 +88,10 @@ router.get('/activenodes/light', function (req, res) {
 router.get('/light/stop/:id', function (req, res) {
     var id = req.params.id
     arr.push(id);
+    var i = activeNodes.indexOf(id);
+    if(i > -1) {
+        activeNodes.splice(i,1);
+    }
     res.send('gelukt')
 })
 
@@ -104,6 +118,7 @@ function makeResUrls(boolean) {
             res.send(createdDataLight())
         });
         arrTempID.push(lightID.toString())
+        activeNodes.push(lightID.toString())
         lightID++;
     }
 }

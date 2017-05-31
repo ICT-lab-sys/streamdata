@@ -20,6 +20,7 @@ var activeTempNodes = 1;
 var tempID = 2;
 var arr = [];
 var arrTempID = [];
+var activeNodes = ["1"];
 var randomTempData = setInterval(function() { createData();}, 3000);
 
 router.use('/api/streamdata', router);
@@ -54,6 +55,14 @@ router.get('/temp/:id', function (req, res) {
     }
 });
 
+router.get('/inactive/temp', function (req, res) {
+    res.send(arr)
+})
+
+router.get('/active/temp', function (req, res) {
+    res.send(activeNodes)
+})
+
 router.get('/temp/restart/:id', function (req, res) {
     var id = req.params.id
     var i = arr.indexOf(id);
@@ -61,6 +70,7 @@ router.get('/temp/restart/:id', function (req, res) {
         arr.splice(i,1);
     }
     arrTempID.push(id)
+    activeNodes.push(id)
     res.send('gelukt')
 });
 
@@ -78,6 +88,10 @@ router.get('/activenodes/temp', function (req, res) {
 router.get('/temp/stop/:id', function (req, res) {
     var id = req.params.id
     arr.push(id);
+    var i = activeNodes.indexOf(id);
+    if(i > -1) {
+        activeNodes.splice(i,1);
+    }
     res.send('gelukt')
 })
 
@@ -103,6 +117,7 @@ function makeResUrls(boolean) {
             res.send(createdDataTemp())
         });
         arrTempID.push(tempID.toString())
+        activeNodes.push(tempID.toString())
         tempID++;
     }
 }

@@ -20,6 +20,7 @@ var activeHumidNodes = 1;
 var humidID = 2;
 var arr = [];
 var arrTempID = [];
+var activeNodes = ["1"];
 var randomHumidData = setInterval(function() { createData();}, 3000);
 
 router.use('/api/streamdata', router);
@@ -54,12 +55,21 @@ router.get('/humidity/:id', function (req, res) {
     }
 });
 
+router.get('/inactive/humidity', function (req, res) {
+    res.send(arr)
+})
+
+router.get('/active/humidity', function (req, res) {
+    res.send(activeNodes)
+})
+
 router.get('/humidity/restart/:id', function (req, res) {
     var id = req.params.id
     var i = arr.indexOf(id);
     if(i > -1) {
         arr.splice(i,1);
     }
+    activeNodes.push(id)
     arrTempID.push(id)
     res.send('gelukt')
 });
@@ -78,6 +88,10 @@ router.get('/activenodes/humidity', function (req, res) {
 router.get('/humidity/stop/:id', function (req, res) {
     var id = req.params.id
     arr.push(id);
+    var i = activeNodes.indexOf(id);
+    if(i > -1) {
+        activeNodes.splice(i,1);
+    }
     res.send('gelukt')
 })
 
@@ -104,6 +118,7 @@ function makeResUrls(boolean) {
             res.send(createdDataHumidity())
         });
         arrTempID.push(humidID.toString())
+        activeNodes.push(humidID.toString())
         humidID++;
     }
 }
