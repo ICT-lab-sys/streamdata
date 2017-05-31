@@ -60,6 +60,7 @@ router.get('/light/restart/:id', function (req, res) {
     if(i > -1) {
         arr.splice(i,1);
     }
+    arrTempID.push(id)
     res.send('gelukt')
 });
 
@@ -79,6 +80,19 @@ router.get('/light/stop/:id', function (req, res) {
     arr.push(id);
     res.send('gelukt')
 })
+
+router.get('/light/remove/:id', function (req,res) {
+    var id = req.params.id
+    removeNode(id)
+    res.send('gelukt')
+})
+
+function removeNode(id){
+    var i = arrTempID.indexOf(id);
+    if(i > -1) {
+        arrTempID.splice(i,1);
+    }
+}
 
 function makeNewNode() {
     makeResUrls(true)
