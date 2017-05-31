@@ -103,10 +103,19 @@ router.get('/temp/remove/:id', function (req,res) {
 
 function removeNode(id){
     var i = arrTempID.indexOf(id);
+    var i1 = arr.indexOf(id);
+    var i2 = activeNodes.indexOf(id);
     if(i > -1) {
         arrTempID.splice(i,1);
     }
+    if(i1 > -1) {
+        arr.splice(i1,1);
+    }
+    if(i2 > -1) {
+        activeNodes.splice(i2,1);
+    }
 }
+
 function makeNewNode() {
     makeResUrls(true)
 }
