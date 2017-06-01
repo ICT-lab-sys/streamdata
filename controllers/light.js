@@ -55,11 +55,11 @@ router.get('/light/:id', function (req, res) {
     }
 });
 
-router.get('/inactive/light', function (req, res) {
+router.get('/light/sensor/inactive', function (req, res) {
     res.send(arr)
 })
 
-router.get('/active/light', function (req, res) {
+router.get('/light/sensor/inactive', function (req, res) {
     res.send(activeNodes)
 })
 

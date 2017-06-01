@@ -55,11 +55,11 @@ router.get('/humidity/:id', function (req, res) {
     }
 });
 
-router.get('/inactive/humidity', function (req, res) {
+router.get('/humidity/sensor/inactive', function (req, res) {
     res.send(arr)
 })
 
-router.get('/active/humidity', function (req, res) {
+router.get('/humidity/sensor/inactive', function (req, res) {
     res.send(activeNodes)
 })
 

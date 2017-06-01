@@ -55,11 +55,11 @@ router.get('/temp/:id', function (req, res) {
     }
 });
 
-router.get('/inactive/temp', function (req, res) {
+router.get('/temp/sensor/inactive', function (req, res) {
     res.send(arr)
 })
 
-router.get('/active/temp', function (req, res) {
+router.get('/temp/sensor/active', function (req, res) {
     res.send(activeNodes)
 })
 
