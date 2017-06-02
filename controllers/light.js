@@ -59,10 +59,6 @@ router.get('/light/sensor/inactive', function (req, res) {
     res.send(arr)
 })
 
-router.get('/light/sensor/inactive', function (req, res) {
-    res.send(activeNodes)
-})
-
 router.get('/light/sensor/active', function (req, res) {
     res.send(activeNodes)
 })
