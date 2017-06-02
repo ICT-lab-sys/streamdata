@@ -59,7 +59,7 @@ router.get('/humidity/sensor/inactive', function (req, res) {
     res.send(arr)
 })
 
-router.get('/humidity/sensor/inactive', function (req, res) {
+router.get('/humidity/sensor/active', function (req, res) {
     res.send(activeNodes)
 })
 
