@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var router = express.Router();
-var minTemp = 12;
+var minTemp = 20;
 var id;
 var maxTemp = 30;
 var temp;
@@ -48,6 +48,7 @@ router.get('/temp/:id', function (req, res) {
         if(includes(arr, id)){
             res.send('sensor gestopt')
         } else{
+            createData()
             res.send(createdDataTemp())
         }
     } else {
