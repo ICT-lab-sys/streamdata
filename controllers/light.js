@@ -48,6 +48,7 @@ router.get('/light/:id', function (req, res) {
         if(includes(arr, id)){
             res.send('sensor gestopt')
         } else{
+            createData()
             res.send(createdDataLight())
         }
     } else {
