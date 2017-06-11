@@ -96,6 +96,11 @@ router.get('/humidity/stop/:id', function (req, res) {
     res.send('gelukt')
 })
 
+router.get('/humidity/sensors/totaal', function (req, res) {
+    var totaal = activeNodes.concat(arr)
+    res.send(totaal)
+})
+
 router.get('/humidity/remove/:id', function (req,res) {
     var id = req.params.id
     removeNode(id)

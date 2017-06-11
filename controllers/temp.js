@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var router = express.Router();
-var minTemp = 20;
+var minTemp = 10;
 var id;
 var maxTemp = 30;
 var temp;
@@ -94,6 +94,11 @@ router.get('/temp/stop/:id', function (req, res) {
         activeNodes.splice(i,1);
     }
     res.send('gelukt')
+})
+
+router.get('/temp/sensors/totaal', function (req, res) {
+    var totaal = activeNodes.concat(arr)
+    res.send(totaal)
 })
 
 router.get('/temp/remove/:id', function (req,res) {

@@ -96,6 +96,11 @@ router.get('/light/stop/:id', function (req, res) {
     res.send('gelukt')
 })
 
+router.get('/light/sensors/totaal', function (req, res) {
+    var totaal = activeNodes.concat(arr)
+    res.send(totaal)
+})
+
 router.get('/light/remove/:id', function (req,res) {
     var id = req.params.id
     removeNode(id)
