@@ -25,11 +25,13 @@ var randomLightData = setInterval(function() { createData();}, 3000);
 
 router.use('/api/streamdata', router);
 
+//maar random data
 function createData(){
     light = Math.floor(Math.random() * (maxLight - minLight + 1)) + minLight
     currentTime = new Date()
 }
 
+//return de gemaakte data
 function createdDataLight() {
     return '{"DateTime":' + '"' + currentTime + '"' + ', "Light":' + light + '}'
 }
@@ -38,7 +40,7 @@ router.get('/', function (req, res) {
     res.send("Please go to localhost:3001/api/streamdata/temp")
 })
 
-
+//return data met de bijhorende id of geef melding als deze niet bestaat of is gestopt.
 router.get('/light/'+1, function (req, res) {
     res.send(createdDataLight())
 });
@@ -56,14 +58,17 @@ router.get('/light/:id', function (req, res) {
     }
 });
 
+//alle inactieve sensors
 router.get('/light/sensor/inactive', function (req, res) {
     res.send(arr)
 })
 
+//alle actieve sensors
 router.get('/light/sensor/active', function (req, res) {
     res.send(activeNodes)
 })
 
+//herstart de senor en werk de arrays bij
 router.get('/light/restart/:id', function (req, res) {
     var id = req.params.id
     var i = arr.indexOf(id);
@@ -75,6 +80,7 @@ router.get('/light/restart/:id', function (req, res) {
     res.send('gelukt')
 });
 
+//maak een nieuwe sensor aan
 router.get('/update/light', function (req, res) {
     activeLightNodes++;
     console.log(activeLightNodes)
@@ -82,10 +88,12 @@ router.get('/update/light', function (req, res) {
     res.send(req.params.type)
 });
 
+//laat alle actieve nodes zien
 router.get('/activenodes/light', function (req, res) {
     res.send(JSON.stringify({light : activeLightNodes}))
 });
 
+//stop de sensor en werk de array bij
 router.get('/light/stop/:id', function (req, res) {
     var id = req.params.id
     arr.push(id);
@@ -96,17 +104,20 @@ router.get('/light/stop/:id', function (req, res) {
     res.send('gelukt')
 })
 
+//laat de totale sensors zien (actief en inactiev)
 router.get('/light/sensors/totaal', function (req, res) {
     var totaal = activeNodes.concat(arr)
     res.send(totaal)
 })
 
+//verwijder de sensor
 router.get('/light/remove/:id', function (req,res) {
     var id = req.params.id
     removeNode(id)
     res.send('gelukt')
 })
 
+//functie om de sensor te verwijden en de array bijwerken
 function removeNode(id){
     var i = arrTempID.indexOf(id);
     var i1 = arr.indexOf(id);

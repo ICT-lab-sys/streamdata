@@ -25,11 +25,13 @@ var randomHumidData = setInterval(function() { createData();}, 3000);
 
 router.use('/api/streamdata', router);
 
+//maar random data
 function createData(){
     humidity = Math.floor(Math.random() * (maxHumidity - minHumidity + 1)) + minHumidity;
     currentTime = new Date()
 }
 
+//return de gemaakte data
 function createdDataHumidity() {
     return '{"DateTime":'+'"'+currentTime+'"'+', "Humidity":'+humidity+'}'
 }
@@ -38,6 +40,7 @@ router.get('/', function (req, res) {
     res.send("Please go to localhost:3001/api/streamdata/temp")
 })
 
+//return data met de bijhorende id of geef melding als deze niet bestaat of is gestopt.
 router.get('/humidity/'+1, function (req, res) {
     res.send(createdDataHumidity());
 });
@@ -56,14 +59,17 @@ router.get('/humidity/:id', function (req, res) {
     }
 });
 
+//alle inactieve sensors
 router.get('/humidity/sensor/inactive', function (req, res) {
     res.send(arr)
 })
 
+//alle actieve sensors
 router.get('/humidity/sensor/active', function (req, res) {
     res.send(activeNodes)
 })
 
+//herstart de senor en werk de arrays bij
 router.get('/humidity/restart/:id', function (req, res) {
     var id = req.params.id
     var i = arr.indexOf(id);
@@ -75,6 +81,7 @@ router.get('/humidity/restart/:id', function (req, res) {
     res.send('gelukt')
 });
 
+//maak een nieuwe sensor aan
 router.get('/update/humidity', function (req, res) {
     activeHumidNodes++;
     console.log(activeHumidNodes)
@@ -82,10 +89,12 @@ router.get('/update/humidity', function (req, res) {
     res.send(req.params.type)
 });
 
+//laat alle actieve nodes zien
 router.get('/activenodes/humidity', function (req, res) {
     res.send(JSON.stringify({humidity : activeHumidNodes}))
 });
 
+//stop de sensor en werk de array bij
 router.get('/humidity/stop/:id', function (req, res) {
     var id = req.params.id
     arr.push(id);
@@ -96,17 +105,20 @@ router.get('/humidity/stop/:id', function (req, res) {
     res.send('gelukt')
 })
 
+//laat de totale sensors zien (actief en inactiev)
 router.get('/humidity/sensors/totaal', function (req, res) {
     var totaal = activeNodes.concat(arr)
     res.send(totaal)
 })
 
+//verwijder de sensor
 router.get('/humidity/remove/:id', function (req,res) {
     var id = req.params.id
     removeNode(id)
     res.send('gelukt')
 })
 
+//functie om de sensor te verwijden en de array bijwerken
 function removeNode(id){
     var i = arrTempID.indexOf(id);
     var i1 = arr.indexOf(id);

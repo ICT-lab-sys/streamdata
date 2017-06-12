@@ -25,20 +25,22 @@ var randomTempData = setInterval(function() { createData();}, 3000);
 
 router.use('/api/streamdata', router);
 
+//maar random data
 function createData(){
     temp = Math.floor(Math.random() * (maxTemp - minTemp + 1)) + minTemp
     currentTime = new Date()
 }
 
+//return de gemaakte data
 function createdDataTemp() {
     return '{"DateTime":' + '"' + currentTime + '"' + ', "Temperature":' + temp + '}'
 }
 
 router.get('/', function (req, res) {
-    res.send("Please go to localhost:3001/api/streamdata/temp")
+    res.send("")
 })
 
-
+//return data met de bijhorende id of geef melding als deze niet bestaat of is gestopt.
 router.get('/temp/'+1, function (req, res) {
     res.send(createdDataTemp())
 });
@@ -56,14 +58,17 @@ router.get('/temp/:id', function (req, res) {
     }
 });
 
+//alle inactieve sensors
 router.get('/temp/sensor/inactive', function (req, res) {
     res.send(arr)
 })
 
+//alle actieve sensors
 router.get('/temp/sensor/active', function (req, res) {
     res.send(activeNodes)
 })
 
+//herstart de senor en werk de arrays bij
 router.get('/temp/restart/:id', function (req, res) {
     var id = req.params.id
     var i = arr.indexOf(id);
@@ -75,6 +80,7 @@ router.get('/temp/restart/:id', function (req, res) {
     res.send('gelukt')
 });
 
+//maak een nieuwe sensor aan
 router.get('/update/temp', function (req, res) {
     activeTempNodes++;
     console.log(activeTempNodes)
@@ -82,10 +88,12 @@ router.get('/update/temp', function (req, res) {
     res.send(req.params.type)
 });
 
+//laat alle actieve nodes zien
 router.get('/activenodes/temp', function (req, res) {
     res.send(JSON.stringify({temp : activeTempNodes}))
 });
 
+//stop de sensor en werk de array bij
 router.get('/temp/stop/:id', function (req, res) {
     var id = req.params.id
     arr.push(id);
@@ -96,17 +104,20 @@ router.get('/temp/stop/:id', function (req, res) {
     res.send('gelukt')
 })
 
+//laat de totale sensors zien (actief en inactiev)
 router.get('/temp/sensors/totaal', function (req, res) {
     var totaal = activeNodes.concat(arr)
     res.send(totaal)
 })
 
+//verwijder de sensor
 router.get('/temp/remove/:id', function (req,res) {
     var id = req.params.id
     removeNode(id)
     res.send('gelukt')
 })
 
+//functie om de sensor te verwijden en de array bijwerken
 function removeNode(id){
     var i = arrTempID.indexOf(id);
     var i1 = arr.indexOf(id);
@@ -122,6 +133,7 @@ function removeNode(id){
     }
 }
 
+//functie om de
 function makeNewNode() {
     makeResUrls(true)
 }
